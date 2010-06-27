@@ -1,0 +1,23 @@
+indexes:
+
+- kind: MBook
+  properties:
+  - name: im
+  - name: date
+    direction: desc
+
+- kind: MBook
+  properties:
+  - name: im
+  - name: rating
+  - name: date
+    direction: desc
+
+- kind: MBook
+  properties:
+  - name: im
+  - name: rating
+  - name: word
+  - name: date
+    direction: desc
+
