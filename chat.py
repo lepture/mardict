@@ -52,6 +52,10 @@ class Message:
             sender = self.sender
             data = self.__history(sender, content)
             return data
+        elif 'clear' == cmd:
+            sender = self.sender
+            data = self.__clear(sender)
+            return data
         elif 'help' == cmd:
             data = self.__help()
             return data
@@ -209,6 +213,10 @@ class Message:
             reply += '%s [%s]\n%s\n\n' % (m.word, m.pron, m.define)
         return reply
 
+    def __clear(self, sender):
+        DictLog.destroy(sender)
+        reply = 'History cleared'
+        return reply
 
     def __help(self):
         reply = ':help, this help menu\n'
@@ -219,6 +227,8 @@ class Message:
         reply += ':del, delete word from your library\n'
         reply += ':list, list words in your library\n'
         reply += ':rating, list  words in your library\n'
+        reply += ':history, your search history\n'
+        reply += ':clear, clear your previous 100 history\n'
         return reply
 
 

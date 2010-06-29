@@ -31,6 +31,13 @@ class DictLog(db.Model):
             count = 10
         return q.fetch(int(count))
 
+    @classmethod
+    def destroy(cls, user_im):
+        ''' clear one's history '''
+        q = db.GqlQuery("SELECT * FROM DictLog WHERE im = :1", user_im)
+        results = q.fetch(100)
+        db.delete(results)
+
 
 class MBook(db.Model):
     ''' for user storing their unfamiliar words '''

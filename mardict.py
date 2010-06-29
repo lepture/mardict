@@ -42,6 +42,7 @@ class DictCN(object):
         pron = info[1]
         define = info[2].replace('\n',', ')
         define = define.replace('&lt;','<').replace('&gt;','>')
+        define = define.replace('&amp;','&')
         # fix pron
         regex = r'&#(\d{3});'
         match = re.findall(regex, pron, re.U)
