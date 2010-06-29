@@ -11,6 +11,7 @@ from models import *
 class Message:
     def __init__(self, message):
         self.__message = message
+        self.sender = db.IM("xmpp", message.sender.split('/')[0])
 
     def parse_cmd(self):
         content = self.__message.body
@@ -33,22 +34,22 @@ class Message:
             return data
         elif 'add' == cmd:
             message = self.__message
-            sender = db.IM("xmpp", message.sender.split('/')[0])
+            sender = self.sender
             data = self.__add(sender, content)
             return data
         elif 'del' == cmd:
             message = self.__message
-            sender = db.IM("xmpp", message.sender.split('/')[0])
+            sender = self.sender
             data = self.__del(sender, content)
             return data
         elif 'list' == cmd:
             message = self.__message
-            sender = db.IM("xmpp", message.sender.split('/')[0])
+            sender = self.sender
             data = self.__list(sender, content)
             return data
         elif 'rating' == cmd:
             message = self.__message
-            sender = db.IM("xmpp", message.sender.split('/')[0])
+            sender = self.sender
             data = self.__rating(sender, content)
             return data
         elif 'help' == cmd:
@@ -64,6 +65,9 @@ class Message:
             data = response
             reply = '%s [%s]\nfrom: dict.cn\n%s' % \
                     (data['key'], data['pron'], data['define'])
+
+            sender = self.sender
+            DictLog.add_record(sender, data['key'], data['define'], data['pron'])
         else:
             reply = 'Not Found'
         return reply
@@ -99,6 +103,8 @@ class Message:
             data = response
             reply = '%s [%s]\nfrom: dict.cn\n%s' % \
                     (data['key'], data['pron'], data['define'])
+            sender = self.sender
+            DictLog.add_record(sender, data['key'], data['define'], data['pron'])
         else:
             g = GoogleDict(content)
             lan = g.detect_language()
@@ -138,7 +144,14 @@ class Message:
                 else:
                     reply = 'You have added 5 times'
         else:
-            reply = 'Usage:\n:add word'
+            log = DictLog.get_record(sender)
+            if 0 == len(log):
+                reply = 'You add nothing'
+            else:
+                data = log[0]
+                MBook.add_record(sender, data.word, data.define, data.pron)
+                reply = '"%s" has added to your libarary\n\n%s [%s]\n%s' %\
+                        (data.word, data.word, data.pron, data.define)
         return reply
 
     def __del(self, sender, content):

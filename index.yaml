@@ -21,3 +21,8 @@ indexes:
   - name: date
     direction: desc
 
+- kind: DictLog
+  properties:
+  - name: im
+  - name: date
+    direction: desc

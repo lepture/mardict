@@ -3,6 +3,30 @@
 
 from google.appengine.ext import db
 
+class DictLog(db.Model):
+    im = db.IMProperty(required=True)
+    word = db.StringProperty(required=True)
+    define = db.StringProperty()
+    pron = db.StringProperty()
+    date = db.DateTimeProperty(auto_now_add=True)
+
+    @classmethod
+    def add_record(cls, user_im, user_word, user_define, user_pron):
+        m = DictLog(
+            im = user_im,
+            word = user_word,
+            define = user_define,
+            pron= user_pron
+        )
+        m.put()
+
+    @classmethod
+    def get_record(cls, user_im):
+        q = db.GqlQuery("SELECT * FROM DictLog WHERE im = :1 ORDER BY date DESC", user_im)
+        return q.fetch(1)
+
+
+
 class MBook(db.Model):
     ''' for user storing their unfamiliar words '''
     im = db.IMProperty(required=True)
