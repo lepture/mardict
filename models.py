@@ -27,7 +27,7 @@ class DictLog(db.Model):
     @classmethod
     def list_record(cls, user_im, count=10):
         q = db.GqlQuery("SELECT * FROM DictLog WHERE im = :1 ORDER BY date DESC", user_im)
-        if int(count) > 50 or int(count) < 0:
+        if int(count) > 100 or int(count) < 0:
             count = 10
         return q.fetch(int(count))
 
@@ -70,27 +70,27 @@ class MBook(db.Model):
     @classmethod
     def list_record(cls, user_im, count):
         q = db.GqlQuery("SELECT * FROM MBook WHERE im = :1 ORDER BY date DESC", user_im)
-        if int(count) > 50 or int(count) < 0:
+        if int(count) > 100 or int(count) < 0:
             count = 10
         return q.fetch(int(count))
 
     @classmethod
     def list_old_record(cls, user_im, count):
         q = db.GqlQuery("SELECT * FROM MBook WHERE im = :1", user_im)
-        if int(count) > 50 or int(count) < 0:
+        if int(count) > 100 or int(count) < 0:
             count = 10
         return q.fetch(int(count))
 
     @classmethod
     def rating_record(cls, user_im, user_rating, count):
         q = db.GqlQuery("SELECT * FROM MBook WHERE im = :1 AND rating = :2 ORDER BY date DESC", user_im, user_rating)
-        if int(count) > 50 or int(count) < 0:
+        if int(count) > 100 or int(count) < 0:
             count = 10
         return q.fetch(int(count))
 
     @classmethod
     def rating_old_record(cls, user_im, user_rating, count):
         q = db.GqlQuery("SELECT * FROM MBook WHERE im = :1 AND rating = :2", user_im, user_rating)
-        if int(count) > 50 or int(count) < 0:
+        if int(count) > 100 or int(count) < 0:
             count = 10
         return q.fetch(int(count))

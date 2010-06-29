@@ -70,7 +70,7 @@ class Message:
             data = self.__clear(sender)
             return data
         elif 'help' == cmd:
-            data = self.__help()
+            data = self.__help(content)
             return data
         else:
             return 'Undefined command'
@@ -242,17 +242,61 @@ class Message:
         reply = 'History cleared'
         return reply
 
-    def __help(self):
-        reply = ':help, this help menu\n'
-        reply += ':xx2xx, eg: en2zh, zh2ja, en2ja\n'
-        reply += ':dict, only find translation on dict.cn\n'
-        reply += ':google, only find translation on google\n'
-        reply += ':add, add new word to your library\n'
-        reply += ':del, delete word from your library\n'
-        reply += ':list, list words in your library\n'
-        reply += ':rating, list  words in your library\n'
-        reply += ':history, your search history\n'
-        reply += ':clear, clear your previous 100 history\n'
+    def __help(self, content):
+        if not content:
+            reply = ':help, this help menu, :help command for detail\n'
+            reply += ':lan2lan, eg: en2zh, zh2ja, en2ja\n'
+            reply += ':dict, only find translation on dict.cn\n'
+            reply += ':google, only find translation on google\n'
+            reply += ':add, add new word to your library\n'
+            reply += ':del, delete word from your library\n'
+            reply += ':list, list words in your library\n'
+            reply += ':rating, list  words in your library\n'
+            reply += ':history, your search history\n'
+            reply += ':clear, clear your oldest 100 history\n'
+            reply += 'more information on http://mardict.appspot.com\n'
+        elif 'lan2lan' == content:
+            reply = 'help on lan2lan:\n[usage] :lan2lan word\n'
+            reply += '[intro] translate from one language to another language by google translation api.\n'
+            reply += '[eg] :en2zh hello\n'
+        elif 'dict' == content:
+            reply = 'help on dict:\n[usage] :dict word\n'
+            reply += '[intro] translate your word only use dict.cn api'
+            reply += '[eg] :dict hello\n'
+        elif 'google' == content:
+            reply = 'help on google:\n[usage] :google word\n'
+            reply += '[intro] translate your word only use google api'
+            reply += '[eg] :google hello\n'
+        elif 'add' == content:
+            reply = 'help on add:\n[usage] :add (word)\n'
+            reply += '[intro] add the word to your library(storing your unfamiliar word)\n'
+            reply += '[eg] :add (without any word append, will add your last checking word)\n'
+            reply += '     :add hello\n'
+        elif 'del' == content:
+            reply = 'help on del:\n[usage] :del word\n'
+            reply += '[intro] delete the word from your library.\n'
+            reply += '[eg] :del hello\n'
+        elif 'list' == content:
+            reply = 'help on list:\n[usage] :list (number)\n'
+            reply += '[intro] list a certain number of words from your library.\n'
+            reply += '[eg] :list (without any number append, the count will be 10)\n'
+            reply += '     :list 20 (list the newest 20 words from your library)\n'
+            reply += '     :list -20 (list the oldest 20 words from your library)\n'
+        elif 'rating' == content:
+            reply = 'help on rating:\n[usage] :rating (number) (number)\n'
+            reply += '[intro] list a certain number of a certain rate of words from your library.\n'
+            reply += '[eg] :rating (without any number append, the rate will be 0, the count will be 10)\n'
+            reply += '     :list 1 (list the newest 10 words where rate is 1 from your library)\n'
+            reply += '     :list 1 -10 (list the oldest 10 words where rate is 1 from your library)\n'
+        elif 'history' == content:
+            reply = 'help on history:\n[usage] :history (number)\n'
+            reply += '[intro] list your checking history\n'
+            reply += '[eg] :history (without any number append, the count will be 10)\n'
+            reply += '     :list 20 (list your newest 20 checking history)\n'
+        elif 'clear' == content:
+            reply = 'help on clear:\n[usage] :clear\n'
+            reply += '[intro] clear your oldest 100 checking history\n'
+            reply += '[eg] :clear\n'
         return reply
 
 
