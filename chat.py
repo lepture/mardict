@@ -8,6 +8,19 @@ from mardict import DictCN, GoogleDict
 
 from models import *
 
+def star_rate(num):
+    ''' 0 <= num <= 5'''
+    num = str(num)
+    d = {
+        '0':u'☆☆☆☆☆',
+        '1':u'☆☆☆☆★',
+        '2':u'☆☆☆★★',
+        '3':u'☆☆★★★',
+        '4':u'☆★★★★',
+        '5':u'★★★★★',
+    }
+    return d[num]
+
 class Message:
     def __init__(self, message):
         self.__message = message
@@ -176,10 +189,16 @@ class Message:
             count = int(content)
         except ValueError:
             count = 10
-        lib = MBook.list_record(sender, count)
-        reply = 'list:\n'
+        if count < 0:
+            count = -count
+            lib = MBook.list_old_record(sender, count)
+            reply = 'list by oldest:\n\n'
+        else:
+            lib = MBook.list_record(sender, count)
+            reply = 'list by newest:\n\n'
         for m in lib:
-            reply += '%s [%s]\n%s\n\n' % (m.word, m.pron or 'google', m.define)
+            reply += u'%s\n%s [%s]\n%s\n\n' %\
+                    (star_rate(m.rating), m.word, m.pron, m.define)
         return reply
 
     def __rating(self, sender, content):
@@ -196,10 +215,15 @@ class Message:
         else:
             rate = 0
             count = 10
-        lib = MBook.rating_record(sender, rate, count)
-        reply = 'rating: %s\n' % rate
+        if count < 0:
+            count = -count
+            lib = MBook.rating_old_record(sender, rate, count)
+            reply = u'rating by oldest:\n%s \n\n' % star_rate(rate)
+        else:
+            lib = MBook.rating_record(sender, rate, count)
+            reply = u'rating by newest:\n%s \n\n' % star_rate(rate)
         for m in lib:
-            reply += '%s [%s]\n%s\n\n' % (m.word, m.pron or 'google', m.define)
+            reply += '%s [%s]\n%s\n\n' % (m.word, m.pron, m.define)
         return reply
 
     def __history(self, sender, content):
