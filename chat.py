@@ -33,24 +33,24 @@ class Message:
             data = self.__google(content)
             return data
         elif 'add' == cmd:
-            message = self.__message
             sender = self.sender
             data = self.__add(sender, content)
             return data
         elif 'del' == cmd:
-            message = self.__message
             sender = self.sender
             data = self.__del(sender, content)
             return data
         elif 'list' == cmd:
-            message = self.__message
             sender = self.sender
             data = self.__list(sender, content)
             return data
         elif 'rating' == cmd:
-            message = self.__message
             sender = self.sender
             data = self.__rating(sender, content)
+            return data
+        elif 'history' == cmd:
+            sender = self.sender
+            data = self.__history(sender, content)
             return data
         elif 'help' == cmd:
             data = self.__help()
@@ -197,6 +197,18 @@ class Message:
         for m in lib:
             reply += '%s [%s]\n%s\n\n' % (m.word, m.pron or 'google', m.define)
         return reply
+
+    def __history(self, sender, content):
+        try:
+            count = int(content)
+        except ValueError:
+            count = 10
+        logs = DictLog.list_record(sender, count)
+        reply = 'history:\n'
+        for m in logs:
+            reply += '%s [%s]\n%s\n\n' % (m.word, m.pron, m.define)
+        return reply
+
 
     def __help(self):
         reply = ':help, this help menu\n'

@@ -24,7 +24,12 @@ class DictLog(db.Model):
     def get_record(cls, user_im):
         q = db.GqlQuery("SELECT * FROM DictLog WHERE im = :1 ORDER BY date DESC", user_im)
         return q.fetch(1)
-
+    @classmethod
+    def list_record(cls, user_im, count=10):
+        q = db.GqlQuery("SELECT * FROM DictLog WHERE im = :1 ORDER BY date DESC", user_im)
+        if int(count) > 50 or int(count) < 0:
+            count = 10
+        return q.fetch(int(count))
 
 
 class MBook(db.Model):
