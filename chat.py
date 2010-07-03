@@ -121,7 +121,10 @@ class Message:
             reply = '%s [%s]\nfrom: dict.cn\n%s' % \
                     (data['key'], data['pron'], data['define'])
             sender = self.sender
-            DictLog.add_record(sender, data['key'], data['define'], data['pron'])
+            if 'help' == content:
+                reply += '\nNeed help? Type ":help" for more infomation.'
+            else:
+                DictLog.add_record(sender, data['key'], data['define'], data['pron'])
         else:
             g = GoogleDict(content)
             lan = g.detect_language()
