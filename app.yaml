@@ -11,6 +11,10 @@ handlers:
 - url: /static
   static_dir: static
 
+- url: /tool/.*
+  script: app.py
+  login: required
+
 - url: /.*
   script: app.py
 

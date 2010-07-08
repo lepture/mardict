@@ -11,6 +11,8 @@ from chat import XmppHandler
 application = webapp.WSGIApplication(
     [
         ('/',Index),
+        ('/help/',Help),
+        ('/tool/',Tool),
         ('/_ah/xmpp/message/chat/', XmppHandler),
     ],
     debug=DEBUG,

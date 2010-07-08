@@ -7,3 +7,4 @@ DEBUG = True
 
 ROOT = os.path.dirname(__file__)
 DIR = os.path.join(ROOT, 'templates')
+VERSION = '1.0'

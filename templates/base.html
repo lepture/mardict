@@ -3,10 +3,55 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/static/style.css" />
 	<title>MarDict</title>
 </head>
 <body>
-    {% block main %}
-    {% endblock %}
+    <div id="wrapper">
+        <div id="container">
+            <div id="header">
+                <div class="wrap">
+                    <div id="logo">
+                        <h1><a href="/" rel="self">Mardict</a></h1>
+                    </div>
+                    <ul id="nav">
+                        {% block nav %}
+                        <li><a class="current" href="/">Home</a></li>
+                        <li><a href="/tool/">Tool</a></li>
+                        <li><a href="/help/">Help</a></li>
+                        {% endblock %}
+                    </ul>
+                </div>
+                <div id="menu-info">
+                    <div class="wrap clearfix">
+                        <ul class="userinfo">
+                            {% if user %}
+                            <li>Welcome <strong>{{ user.nickname }}</strong></li>
+                            {% else %}
+                            <li>Please</li>
+                            {% endif %}
+                            <li><a href="{{ st_url }}">{{ st_text }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="main">
+                <div class="wrap">
+                    {% block main %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div id="footer">
+                <p id="copyright">
+                Copyright &copy; 2010 by <a href="http://marvour.com">Marvour</a>
+                | <a href="http://www.opensource.org/licenses/bsd-license.php">BSD License</a>
+                | <a href="http://github.com/marvour/mardict">Get Source</a>
+                </p>
+                <p id="version">
+                Version {{ version }}
+                </p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

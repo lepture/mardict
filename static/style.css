@@ -1,0 +1,245 @@
+body, div, p, img, a, span, h1, td, th {
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    outline: 0 none;
+}
+p {
+    margin: 5px 0;
+}
+blockquote {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+    color: #21759b;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+body {
+    background: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    letter-spacing: 0;
+    color: #333;
+    height: 100%;
+}
+label.text {
+    vertical-align: top;
+}
+input {
+    border: 1px solid #dfdfdf;
+    height: 16px;
+    padding: 3px;
+    margin: 4px;
+}
+input[type="file"] {
+    height: auto;
+}
+textarea {
+    border: 1px solid #dfdfdf;
+    padding: 2px;
+    max-width: 500px;
+    min-height: 200px;
+    margin: 4px;
+}
+input[type="submit"] {
+    background: #fff;
+    border: 1px solid #cacaca;
+    color: #464646;
+    border-radius: 11px;
+    -moz-border-radius: 11px;
+    cursor: pointer;
+    margin: 0;
+    padding: 0 7px 2px;
+    height: 23px;
+    vertical-align: middle;
+}
+a.button {
+    background: #fff;
+    border: 1px solid #cacaca;
+    color: #464646;
+    border-radius: 11px;
+    -moz-border-radius: 11px;
+    cursor: pointer;
+    margin: 0;
+    padding: 3px 10px;
+    line-height: 24px;
+
+}
+input[type="submit"]:hover, a.button:hover {
+    border: 1px solid #adaca7;
+    color: #222;
+    text-decoration: none;
+}
+select {
+    background: #fff;
+    border: 1px solid #dfdfdf;
+    min-width: 84px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    padding: 2px;
+}
+label.required {
+    font-weight: bold;
+}
+
+#container {
+    margin: auto;
+    min-width: 980px;
+    text-align: left;
+}
+
+.wrap {
+    margin: 0 auto;
+    width: 960px;
+}
+.no-border {
+    border: 0 none;
+}
+.clear {
+    clear: both;
+}
+
+/* ---------- clearfix hack ---------- */
+.clearfix:after { content: "."; display: block; clear: both; height: 0; visibility: hidden; }
+.clearfix { display: inline-block; }
+/* exlude MacIE5 \*/
+* html .clearfix { height: 1% }
+* .clearfix {display:block;}
+*/* end MacIE5 */
+
+/* header */
+#header {
+    background: #464646;
+    min-width: 960px;
+}
+#logo {
+    float: left;
+    min-width: 300px;
+    text-align: center;
+    height: 66px;
+}
+#logo h1 {
+    line-height: 66px;
+}
+#logo h1 a {
+    color: #fff;
+    text-shadow: 3px 3px 2px #333;
+}
+#logo h1 a:hover {
+    text-decoration: none;
+}
+#nav {
+    float: right;
+    margin-top: 20px;
+}
+#nav li {
+    float: left;
+}
+#nav li a {
+    display: block;
+    padding: 0 10px;
+    line-height: 46px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    text-shadow: 1px 1px 1px #333;
+    color: #999;
+}
+#nav li a.current {
+    background: #e4f2fd;
+    color: #555;
+    text-shadow: 1px 1px 1px #c6d9e9;
+    border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+}
+#nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+}
+#nav li a.current:hover {
+    color: #555;
+}
+#menu-info {
+    clear: both;
+    background: #e4f2fd;
+    border-bottom: 1px solid #c6d9e9;
+    height: 30px;
+}
+
+#menu-info .wrap {
+    position: relative;
+    height: 30px;
+    line-height: 30px;
+    font-size: 13px;
+    color: #555;
+}
+#menu-info ul.subnav {
+    position: absolute;
+    left: 20px;
+}
+#menu-info ul.userinfo {
+    position: absolute;
+    right: 0;
+}
+#menu-info ul li {
+    float: left;
+    padding: 0 12px;
+}
+#menu-info a {
+    font-weight: bold;
+    text-shadow: 0 1px 0 #fff;
+}
+#menu-info a:hover {
+    color: #d98500;
+    text-decoration: none;
+}
+#menu-info ul.userinfo span a {
+    color: #4ca6cf;
+}
+#menu-info ul.userinfo span a:hover {
+    color: #d98500;
+}
+
+#main {
+    margin: 30px 0;
+    min-height: 450px;
+}
+
+/* footer */
+#footer {
+    clear: both;
+    background: #464646;
+    height: 50px;
+    color: #fff;
+    font-size: 14px;
+    line-height: 40px;
+    padding: 0 90px;
+}
+#footer a {
+    color: #999;
+}
+#footer #copyright {
+    float: left;
+}
+#footer #version {
+    float: right;
+}
