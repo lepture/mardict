@@ -188,43 +188,79 @@ class Message:
         return reply
 
     def __list(self, sender, content):
-        try:
-            count = int(content)
-        except ValueError:
-            count = 10
-        if count < 0:
-            count = -count
-            lib = MBook.list_old_record(sender, count)
-            reply = 'list by oldest:\n\n'
+        old = False
+        if content:
+            c1 = content.split()
+            if len(c1) > 1:
+                if '-' == c1[1]:
+                    old = True
+            c2 = c1[0].split('-')
+            if len(c2) > 1:
+                try:
+                    offset = int(c2[0])
+                except ValueError:
+                    offset = 0
+                try:
+                    count = int(c2[1]) - offset
+                except ValueError:
+                    count = 10
+            else:
+                offset = 0
+                try:
+                    count = int(c2[0])
+                except ValueError:
+                    count = 10
         else:
-            lib = MBook.list_record(sender, count)
-            reply = 'list by newest:\n\n'
+            offset = 0
+            count = 10
+        if old:
+            lib = MBook.list_old_record(sender, count)
+            reply = 'list by oldest: (from: %s)\n\n' % offset
+        else:
+            lib = MBook.list_record(sender, offset, count)
+            reply = 'list by newest: (from :%s)\n\n' % offset
         for m in lib:
             reply += u'%s\n%s [%s]\n%s\n\n' %\
                     (star_rate(m.rating), m.word, m.pron, m.define)
         return reply
 
     def __rating(self, sender, content):
+        old = False
+        rate = 0
+        offset = 0
+        count = 10
         if content:
-            cmd = content.split()
+            listcmd = content.split()
+            if len(listcmd) > 2:
+                if '-' == listcmd[2]:
+                    old = True
+            if len(listcmd) > 1:
+                c1 = listcmd[1]
+                c2 = c1.split('-')
+                if len(c2) > 1:
+                    try:
+                        offset = int(c2[0])
+                    except ValueError:
+                        offset = 0
+                    try:
+                        count = int(c2[1]) - offset
+                    except ValueError:
+                        count = 10
+                else:
+                    try:
+                        count = int(c2[0])
+                    except ValueError:
+                        count = 10
             try:
-                rate = int(cmd[0])
-            except:
+                rate = int(listcmd[0])
+            except ValueError:
                 rate = 0
-            try:
-                count = int(cmd[1])
-            except:
-                count = 10
+        if old:
+            lib = MBook.rating_old_record(sender, rate, offset, count)
+            reply = u'rating by oldest: (from:%s)\n%s \n\n' % (offset,star_rate(rate))
         else:
-            rate = 0
-            count = 10
-        if count < 0:
-            count = -count
-            lib = MBook.rating_old_record(sender, rate, count)
-            reply = u'rating by oldest:\n%s \n\n' % star_rate(rate)
-        else:
-            lib = MBook.rating_record(sender, rate, count)
-            reply = u'rating by newest:\n%s \n\n' % star_rate(rate)
+            lib = MBook.rating_record(sender, rate, offset, count)
+            reply = u'rating by newest: (from:%s)\n%s \n\n' % (offset,star_rate(rate))
         for m in lib:
             reply += '%s [%s]\n%s\n\n' % (m.word, m.pron, m.define)
         return reply

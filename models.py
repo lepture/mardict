@@ -68,29 +68,46 @@ class MBook(db.Model):
             m.put()
     
     @classmethod
-    def list_record(cls, user_im, count):
+    def list_record(cls, user_im, offset=0, count=10):
         q = db.GqlQuery("SELECT * FROM MBook WHERE im = :1 ORDER BY date DESC", user_im)
         if int(count) > 100 or int(count) < 0:
             count = 10
-        return q.fetch(int(count))
+        if int(offset) > 1000:
+            offset = 1000
+        if offset < 0:
+            offset = 0
+        return q.fetch(int(count), int(offset))
 
     @classmethod
-    def list_old_record(cls, user_im, count):
+    def list_old_record(cls, user_im, offset=0, count=10):
         q = db.GqlQuery("SELECT * FROM MBook WHERE im = :1", user_im)
         if int(count) > 100 or int(count) < 0:
             count = 10
-        return q.fetch(int(count))
+        if int(offset) > 1000:
+            offset = 1000
+        if offset < 0:
+            offset = 0
+        return q.fetch(int(count), int(offset))
 
     @classmethod
-    def rating_record(cls, user_im, user_rating, count):
+    def rating_record(cls, user_im, user_rating, offset=0, count=10):
         q = db.GqlQuery("SELECT * FROM MBook WHERE im = :1 AND rating = :2 ORDER BY date DESC", user_im, user_rating)
         if int(count) > 100 or int(count) < 0:
             count = 10
-        return q.fetch(int(count))
+        if int(offset) > 1000:
+            offset = 1000
+        if offset < 0:
+            offset = 0
+        return q.fetch(int(count), int(offset))
 
     @classmethod
-    def rating_old_record(cls, user_im, user_rating, count):
+    def rating_old_record(cls, user_im, user_rating, offset=0, count=10):
         q = db.GqlQuery("SELECT * FROM MBook WHERE im = :1 AND rating = :2", user_im, user_rating)
         if int(count) > 100 or int(count) < 0:
             count = 10
-        return q.fetch(int(count))
+        if int(offset) > 1000:
+            offset = 1000
+        if offset < 0:
+            offset = 0
+        return q.fetch(int(count), int(offset))
+
