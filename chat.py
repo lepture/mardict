@@ -4,7 +4,8 @@
 from google.appengine.ext import db
 from google.appengine.ext.webapp import xmpp_handlers
 
-from mardict import DictCN, GoogleDict
+from utils.mardict import DictCN, GoogleDict
+from utils.data import *
 
 from models import *
 
@@ -93,6 +94,8 @@ class Message:
         return reply
 
     def __google(self,content):
+        if not content:
+            return 'You asked nothing'
         g = GoogleDict(content)
         response = g.get_response()
         if response:
@@ -286,59 +289,25 @@ class Message:
 
     def __help(self, content):
         if not content:
-            reply = ':help, this help menu, :help command for detail\n'
-            reply += ':lan2lan, eg: en2zh, zh2ja, en2ja\n'
-            reply += ':dict, only find translation on dict.cn\n'
-            reply += ':google, only find translation on google\n'
-            reply += ':add, add new word to your library\n'
-            reply += ':del, delete word from your library\n'
-            reply += ':list, list words in your library\n'
-            reply += ':rating, list  words in your library\n'
-            reply += ':history, your search history\n'
-            reply += ':clear, clear your oldest 100 history\n'
-            reply += 'more information on http://mardict.appspot.com\n'
+            reply = help_txt
         elif 'lan2lan' == content:
-            reply = 'help on lan2lan:\n[usage] :lan2lan word\n'
-            reply += '[intro] translate from one language to another language by google translation api.\n'
-            reply += '[eg] :en2zh hello\n'
+            reply = help_lan2lan
         elif 'dict' == content:
-            reply = 'help on dict:\n[usage] :dict word\n'
-            reply += '[intro] translate your word only use dict.cn api'
-            reply += '[eg] :dict hello\n'
+            reply = help_dict
         elif 'google' == content:
-            reply = 'help on google:\n[usage] :google word\n'
-            reply += '[intro] translate your word only use google api'
-            reply += '[eg] :google hello\n'
+            reply = help_google
         elif 'add' == content:
-            reply = 'help on add:\n[usage] :add (word)\n'
-            reply += '[intro] add the word to your library(storing your unfamiliar word)\n'
-            reply += '[eg] :add (without any word append, will add your last checking word)\n'
-            reply += '     :add hello\n'
+            reply = help_add
         elif 'del' == content:
-            reply = 'help on del:\n[usage] :del word\n'
-            reply += '[intro] delete the word from your library.\n'
-            reply += '[eg] :del hello\n'
+            reply = help_del
         elif 'list' == content:
-            reply = 'help on list:\n[usage] :list (number)\n'
-            reply += '[intro] list a certain number of words from your library.\n'
-            reply += '[eg] :list (without any number append, the count will be 10)\n'
-            reply += '     :list 20 (list the newest 20 words from your library)\n'
-            reply += '     :list -20 (list the oldest 20 words from your library)\n'
+            reply = help_list
         elif 'rating' == content:
-            reply = 'help on rating:\n[usage] :rating (number) (number)\n'
-            reply += '[intro] list a certain number of a certain rate of words from your library.\n'
-            reply += '[eg] :rating (without any number append, the rate will be 0, the count will be 10)\n'
-            reply += '     :list 1 (list the newest 10 words where rate is 1 from your library)\n'
-            reply += '     :list 1 -10 (list the oldest 10 words where rate is 1 from your library)\n'
+            reply = help_rating
         elif 'history' == content:
-            reply = 'help on history:\n[usage] :history (number)\n'
-            reply += '[intro] list your checking history\n'
-            reply += '[eg] :history (without any number append, the count will be 10)\n'
-            reply += '     :list 20 (list your newest 20 checking history)\n'
+            reply = help_history
         elif 'clear' == content:
-            reply = 'help on clear:\n[usage] :clear\n'
-            reply += '[intro] clear your oldest 100 checking history\n'
-            reply += '[eg] :clear\n'
+            reply = help_clear
         return reply
 
 
