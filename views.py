@@ -43,3 +43,9 @@ class Tool(webapp.RequestHandler):
         tp = os.path.join(DIR, 'tool.html')
         self.response.out.write(template.render(tp,values))
 
+class Log(webapp.RequestHandler):
+    def get(self):
+        values = myvalues(self.request)
+        tp = os.path.join(DIR, 'tool.html')
+        self.response.out.write(template.render(tp,values))
+

@@ -223,6 +223,12 @@ label.required {
     margin: 30px 0;
     min-height: 450px;
 }
+.section {
+    float: left;
+}
+.sidebar {
+    float: right;
+}
 
 /* footer */
 #footer {
