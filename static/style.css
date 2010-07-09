@@ -31,10 +31,12 @@ a:hover {
 h1 {
     font-size: 30px;
 }
-
+pre {
+    font-family: Monaco, monospace;
+}
 body {
     background: #fff;
-    font-family: Arial, sans-serif;
+    font-family: "WenQuanYi Micro Hei", Arial, sans-serif;
     font-size: 12px;
     text-align: center;
     letter-spacing: 0;
@@ -228,6 +230,30 @@ label.required {
 }
 .sidebar {
     float: right;
+    width: 300px;
+}
+.title {
+    margin-bottom: 20px;
+}
+.title ol {
+    list-style-type: none;
+}
+.title ol a {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Monaco, monospace;
+    line-height: 20px;
+}
+.sec {
+    margin: 20px 10px;
+    border-bottom: 1px dashed #999;
+}
+.cmd a {
+    font-size: 14px;
+    font-weight: bold;
+}
+.keyword {
+    color: #ff4f00;
 }
 
 /* footer */

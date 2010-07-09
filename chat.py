@@ -76,6 +76,9 @@ class Message:
             return 'Undefined command'
 
     def __dict(self,content):
+        if not content:
+            reply = 'You asked nothing'
+            return reply
         d = DictCN(content)
         response = d.get_response()
         if response:

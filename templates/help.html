@@ -7,4 +7,187 @@
 {% endblock %}
 
 {% block main %}
+<h3>所有命令</h3>
+<div class="title">
+    <ol>
+        <li><a href="#1">:help</a></li>
+        <li><a href="#2">:dict</a></li>
+        <li><a href="#3">:google</a></li>
+        <li><a href="#4">:lan2lan</a></li>
+        <li><a href="#5">:history</a></li>
+        <li><a href="#6">:clear</a></li>
+        <li><a href="#7">:add</a></li>
+        <li><a href="#8">:del</a></li>
+        <li><a href="#9">:list</a></li>
+        <li><a href="#10">:rating</a></li>
+    </ol>
+</div>
+<div class="sec">
+    <p>无命令状态时，默认为查询字典功能。相当于先<a href="#2">:dict</a>，再<a href="#3">:google</a>。</p>
+    <p>如果你确定要查询的只是单词，而且需要音标的话，建议使用<a href="#2">:dict</a>。</p>
+    <p>如果你查询的是一句话，甚至是一段话，建议使用<a href="#3">:google</a>。</p>
+    <p>如果你查询的不是英文，而是其它语言的话，建议使用<a href="#4">:lan2lan</a>。</p>
+</div>
+<div class="sec">
+<div class="cmd">
+    <a name="1">:help 【命令】</a>
+    (<strong>可选参量</strong>)
+</div>
+    <p>显示帮助信息，可后接其它命令，获取该命令的详细信息。</p>
+    <pre class="eg">
+    <span class="keyword">:help</span>
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:help</span> dict
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:help</span> lan2lan
+    </pre>
+</div>
+<div class="sec">
+<div class="cmd">
+    <a name="2">:dict 【单词】</a>
+    (<strong>必备参量</strong>)
+</div>
+    <p>这个命令的数据来源为<a href="http://dict.cn">Dict.cn</a>的api。</p>
+    <pre class="eg">
+    <span class="keyword">:dict</span> hello
+    </pre>
+</div>
+<div class="sec">
+<div class="cmd">
+    <a name="3">:google 【单词】</a>
+    (<strong>必备参量</strong>)
+</div>
+    <p>这个命令的数据来源为google tranlation api</p>
+    <p>首先会测试你输入的是什么语言，如果是汉语的话，译为英文，其它都译为中文。</p>
+    <pre class="eg">
+    <span class="keyword">:google</span> google is a bitch
+    </pre>
+</div>
+<div class="sec">
+<div class="cmd">
+    <a name="4">:lan2lan 【单词】</a>
+    (<strong>必备参量</strong>)
+</div>
+    <p>这是一个虚拟命令，其中lan是不固定的。例如:en2zh 就是英译汉，:zh-CN2zh-TW 就是简体转繁体</p>
+    <p>这个命令的数据来源为google tranlation api</p>
+    <pre class="eg">
+    <span class="keyword">:en2ja</span> hello
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:fr2ja</span> bonjour
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:zh-CN2zh-TW</span> 我爱你
+    </pre>
+</div>
+<div class="sec">
+<div class="cmd">
+    <a name="5">:history 【数字】</a>
+    (<strong>可选参量</strong>)
+</div>
+    <p>输出你的查询记录，该记录只包含有音标的单词查询。</p>
+    <p>也就是说只包含由<a href="http://dict.cn">dict.cn</a>提供的数据。默认最多显示10条。</p>
+    <pre class="eg">
+    <span class="keyword">:history</span>
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:history</span> 9
+    </pre>
+</div>
+<div class="sec">
+<div class="cmd">
+    <a name="6">:clear</a>
+    (<strong>没有参量</strong>)
+    <p>清除你的查询记录。</p>
+</div>
+    <pre class="eg">
+    <span class="keyword">:clear</span>
+    </pre>
+</div>
+<div class="sec">
+<div class="cmd">
+    <a name="7">:add 【单词】</a>
+    (<strong>可选参量</strong>)
+    <p>将单词加入到生词本，方便记忆。</p>
+    <p>无参量时，默认添加你上次查询的数据，也就是history的第一个数据。</p>
+</div>
+    <pre class="eg">
+    <span class="keyword">:add</span>
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:add</span> hello
+    </pre>
+</div>
+<div class="sec">
+<div class="cmd">
+    <a name="8">:del 【单词】</a>
+    (<strong>必备参量</strong>)
+    <p>从生词本里删除指定的单词。</p>
+</div>
+    <pre class="eg">
+    <span class="keyword">:del</span> hello
+    </pre>
+</div>
+<div class="sec">
+<div class="cmd">
+    <a name="9">:list 【数字】</a>
+    (<strong>可选参量</strong>)
+    <p>列出生词本里的单词，参量很复杂。</p>
+    <p>你可以尝试一下下面的几种命令。其中 "-" 表示倒序。</p>
+    <p>无参量时，默认正序列出最多10 条数据。</p>
+</div>
+    <pre class="eg">
+    <span class="keyword">:list</span> 
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:list</span> -
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:list</span> 10
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:list</span> 10 -
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:list</span> 2-5
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:list</span> 2-5 -
+    </pre>
+</div>
+<div class="sec">
+<div class="cmd">
+    <a name="10">:rating 【数字】</a>
+    (<strong>可选参量</strong>)
+    <p>列出生词本里你所指定的rate的单词，参量很复杂。</p>
+    <p>你可以尝试一下下面的几种命令。其中 "-" 表示倒序。</p>
+    <p>无参量时，默认正序列出rate=0的最多10条数据。</p>
+</div>
+    <pre class="eg">
+    <span class="keyword">:rating</span>
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:rating</span> -
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:rating</span> 1
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:rating</span> 1 -
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:rating</span> 1 9
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:rating</span> 1 9 -
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:rating</span> 1 2-9
+    </pre>
+    <pre class="eg">
+    <span class="keyword">:rating</span> 1 2-9 -
+    </pre>
+</div>
 {% endblock %}
