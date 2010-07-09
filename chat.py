@@ -195,32 +195,28 @@ class Message:
 
     def __list(self, sender, content):
         old = False
+        offset = 0
+        count = 10
         if content:
             c1 = content.split()
-            if len(c1) > 1:
-                if '-' == c1[1]:
-                    old = True
-            c2 = c1[0].split('-')
-            if len(c2) > 1:
-                try:
-                    offset = int(c2[0])
-                except ValueError:
-                    offset = 0
-                try:
-                    count = int(c2[1]) - offset
-                except ValueError:
-                    count = 10
-            else:
-                offset = 0
-                try:
-                    count = int(c2[0])
-                except ValueError:
-                    count = 10
-        else:
-            offset = 0
-            count = 10
+            if "-" == c1[-1]:
+                old = True
+            if (len(c1) >= 1) and ('-' != c1[0]) :
+                c2 = c1[0].split('-')
+                if len(c2) > 1:
+                    try:
+                        offset = int(c2[0])
+                        count = int(c2[1]) - offset
+                    except ValueError:
+                        offset = 0
+                        count = 10
+                else:
+                    try:
+                        count = int(c2[0])
+                    except ValueError:
+                        count = 10
         if old:
-            lib = MBook.list_old_record(sender, count)
+            lib = MBook.list_old_record(sender, offset, count)
             reply = 'list by oldest: (from: %s)\n\n' % offset
         else:
             lib = MBook.list_record(sender, offset, count)
@@ -236,31 +232,27 @@ class Message:
         offset = 0
         count = 10
         if content:
-            listcmd = content.split()
-            if len(listcmd) > 2:
-                if '-' == listcmd[2]:
-                    old = True
-            if len(listcmd) > 1:
-                c1 = listcmd[1]
-                c2 = c1.split('-')
+            c1 = content.split()
+            if '-' == c1[-1]:
+                old = True
+            try:
+                rate = int(c1[0])
+            except ValueError:
+                rate = 0
+            if len(c1) > 1 and '-' != c1[1]:
+                c2 = c1[1].split('-')
                 if len(c2) > 1:
                     try:
                         offset = int(c2[0])
-                    except ValueError:
-                        offset = 0
-                    try:
                         count = int(c2[1]) - offset
                     except ValueError:
+                        offset = 0
                         count = 10
                 else:
                     try:
                         count = int(c2[0])
                     except ValueError:
                         count = 10
-            try:
-                rate = int(listcmd[0])
-            except ValueError:
-                rate = 0
         if old:
             lib = MBook.rating_old_record(sender, rate, offset, count)
             reply = u'rating by oldest: (from:%s)\n%s \n\n' % (offset,star_rate(rate))
