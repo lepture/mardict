@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+{% spaceless %}
+<mardict>
+    {% for item in data %}
+    <item>
+        <word>{{item.word}}</word>
+        <pron>{{item.pron}}</pron>
+        <define>{{item.define}}</define>
+        <date>{{item.date}}</date>
+        <rate>{{item.rating}}</rate>
+    </item>
+    {% endfor %}
+</mardict>
+{% endspaceless %}

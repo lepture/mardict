@@ -7,6 +7,45 @@
 {% endblock %}
 
 {% block main %}
-
+<div class="section">
+    <table>
+        <thead>
+            <tr>
+                <th class="cl-word">单词</th>
+                <th class="cl-pron">音标</th>
+                <th class="cl-define">解释</th>
+                <th class="cl-rate">Rate</th>
+                <th class="cl-date">时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr class="{% cycle odd,even %}">
+                <td>
+                    <p>{{ item.word }}</p>
+                    <p class="actions">
+                        <span class="delete">
+                            <a href="?action=delete">Delete</a>
+                        </span>
+                    </p>
+                </td>
+                <td><p>{{ item.pron }}</p></td>
+                <td><p>{{ item.define }}</p></td>
+                <td><p>{{ item.rating }}</p></td>
+                <td><p>{{ item.date|date:"D d M Y" }}</p></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th class="cl-word">单词</th>
+                <th class="cl-pron">音标</th>
+                <th class="cl-define">解释</th>
+                <th class="cl-rate">Rate</th>
+                <th class="cl-date">时间</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
 
 {% endblock %}

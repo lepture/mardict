@@ -6,8 +6,11 @@ import os
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
+from google.appengine.ext import db
 
 from config import DIR, VERSION
+
+from models import MBook
 
 def myvalues(request):
     user = users.get_current_user()
@@ -40,6 +43,11 @@ class Help(webapp.RequestHandler):
 class Tool(webapp.RequestHandler):
     def get(self):
         values = myvalues(self.request)
+        xmppemail = values['user'].email().lower()
+        sender = db.IM("xmpp", xmppemail)
+        query = MBook.all()
+        query.filter('im =', sender).order('-date')
+        values['data'] = query
         tp = os.path.join(DIR, 'tool.html')
         self.response.out.write(template.render(tp,values))
 
@@ -49,3 +57,15 @@ class Log(webapp.RequestHandler):
         tp = os.path.join(DIR, 'tool.html')
         self.response.out.write(template.render(tp,values))
 
+class XMLExport(webapp.RequestHandler):
+    def get(self):
+        values = myvalues(self.request)
+        xmppemail = values['user'].email().lower()
+        sender = db.IM("xmpp", xmppemail)
+        query = MBook.all()
+        query.filter('im =', sender).order('-date')
+        values['data'] = query
+        #self.response.headers['Content-Type'] = 'application/atom+xml'
+        self.response.headers['Content-Type'] = 'binary/octet-stream'
+        tp = os.path.join(DIR, 'mardict.xml')
+        self.response.out.write(template.render(tp,values))
