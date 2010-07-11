@@ -66,6 +66,7 @@ class MBook(db.Model):
                       word = user_word,
                       define = user_define)
             m.put()
+        return m
     
     @classmethod
     def list_record(cls, user_im, offset=0, count=10):

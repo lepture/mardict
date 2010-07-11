@@ -2,12 +2,17 @@
 
 {% block nav %}
 <li><a href="/">Home</a></li>
-<li><a class="current" href="/tool/">Tool</a></li>
+<li><a class="current" href="/user/">User</a></li>
 <li><a href="/help/">Help</a></li>
 {% endblock %}
 
 {% block main %}
-<div class="section">
+<div class="mform">
+    <form action="/tool/import/" method="post" enctype="multipart/form-data">
+        <input type="file" name="marfile" /><input type="submit" value="Submit" />
+    </form>
+</div>
+<div class="mtable">
     <table>
         <thead>
             <tr>

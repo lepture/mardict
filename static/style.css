@@ -276,7 +276,7 @@ label.required {
     float: right;
 }
 
-.section table {
+.mtable table {
     width: 960px;
     margin: 0 auto;
     border-spacing: 0;
@@ -285,51 +285,51 @@ label.required {
     border-radius: 3px;
     -moz-border-radius: 3px;
 }
-.section thead, .section tfoot {
+.mtable thead, .mtable tfoot {
     background: #e4f2fd;
     color: #666;
     text-shadow: 0 1px 0 #fff;
     height: 24px;
     line-height: 24px;
 }
-.section tr {
+.mtable tr {
     vertical-align: top;
 }
-.section tbody p.actions {
+.mtable tbody p.actions {
     opacity: 0.3;
 }
-.section tbody p.actions:hover {
+.mtable tbody p.actions:hover {
     opacity: 1;
 }
-.section td {
+.mtable td {
     line-height: 20px;
 }
-.section th, .section td {
+.mtable th, .mtable td {
     padding: 3px 14px;
     border-bottom: 1px solid #dfdfdf;
 }
-.section tfoot th {
+.mtable tfoot th {
     border: 0 none;
 }
-.section .cl-word {
+.mtable .cl-word {
     width: 100px;
 }
-.section .cl-pron {
+.mtable .cl-pron {
     width: 200px;
 }
-.section .cl-define {
+.mtable .cl-define {
     width: 350px;
 }
-.section .cl-rate {
+.mtable .cl-rate {
     width: 40px;
 }
-.section tbody tr.even {
+.mtable tbody tr.even {
     background: #fffed6;
 }
-.section tbody .delete a {
+.mtable tbody .delete a {
     color: #bc0b0b;
 }
-.section tbody .delete a:hover {
+.mtable tbody .delete a:hover {
     color: #d54e21;
     text-decoration: none;
 }

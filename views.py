@@ -9,8 +9,8 @@ from google.appengine.api import users
 from google.appengine.ext import db
 
 from config import DIR, VERSION
-
 from models import MBook
+from utils.parsexml import MarXML
 
 def myvalues(request):
     user = users.get_current_user()
@@ -69,3 +69,18 @@ class XMLExport(webapp.RequestHandler):
         self.response.headers['Content-Type'] = 'binary/octet-stream'
         tp = os.path.join(DIR, 'mardict.xml')
         self.response.out.write(template.render(tp,values))
+
+class XMLImport(webapp.RequestHandler):
+    def post(self):
+        values = myvalues(self.request)
+        xmppemail = values['user'].email().lower()
+        sender = db.IM("xmpp", xmppemail)
+        marfile = self.request.get('marfile')
+        mar = MarXML(marfile)
+        content = mar.parse_data()
+        for m in content:
+            mdb = MBook.add_record(sender,m['word'], m['define'], m['pron'])
+            mdb.date = m['date']
+            mdb.put()
+        #self.response.out.write(content)
+        self.redirect('/tool/')

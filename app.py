@@ -12,8 +12,9 @@ application = webapp.WSGIApplication(
     [
         ('/',Index),
         ('/help/',Help),
-        ('/tool/',Tool),
-        ('/tool/mardict\.xml', XMLExport),
+        ('/user/',Tool),
+        ('/user/mardict\.xml', XMLExport),
+        ('/user/import/', XMLImport),
         ('/_ah/xmpp/message/chat/', XmppHandler),
     ],
     debug=DEBUG,
