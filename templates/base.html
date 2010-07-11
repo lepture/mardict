@@ -24,6 +24,10 @@
                 </div>
                 <div id="menu-info">
                     <div class="wrap clearfix">
+                        <ul class="subnav">
+                            {% block subnav %}
+                            {% endblock %}
+                        </ul>
                         <ul class="userinfo">
                             {% if user %}
                             <li>Welcome <strong>{{ user.nickname }}</strong></li>

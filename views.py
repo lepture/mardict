@@ -75,6 +75,10 @@ class XMLExport(webapp.RequestHandler):
         self.response.out.write(template.render(tp,values))
 
 class XMLImport(webapp.RequestHandler):
+    def get(self):
+        values = myvalues(self.request)
+        tp = os.path.join(DIR, 'import.html')
+        self.response.out.write(template.render(tp,values))
     def post(self):
         values = myvalues(self.request)
         xmppemail = values['user'].email().lower()

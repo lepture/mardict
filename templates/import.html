@@ -6,6 +6,11 @@
 <li><a href="/help/">Help</a></li>
 {% endblock %}
 
+{% block subnav %}
+<li><a href="/user/mardict.xml">Export</a></li>
+<li><a href="/user/import/">Import</a></li>
+{% endblock %}
+
 {% block main %}
 <div class="mform">
     <form action="/tool/import/" method="post" enctype="multipart/form-data">
