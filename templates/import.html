@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li><a class="current" href="/user/">User</a></li>
+<li><a href="/help/">Help</a></li>
+{% endblock %}
+
+{% block main %}
+<div class="mform">
+    <form action="/tool/import/" method="post" enctype="multipart/form-data">
+        <input type="file" name="marfile" /><input type="submit" value="Submit" />
+    </form>
+</div>
+{% endblock %}

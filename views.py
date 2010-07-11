@@ -11,6 +11,7 @@ from google.appengine.ext import db
 from config import DIR, VERSION
 from models import MBook
 from utils.parsexml import MarXML
+from utils.paginator import pagi
 
 def myvalues(request):
     user = users.get_current_user()
@@ -42,12 +43,15 @@ class Help(webapp.RequestHandler):
 
 class Tool(webapp.RequestHandler):
     def get(self):
+        count = 10
+        #stor = self.request.get_all(action='none', p=1)
+        p = self.request.get('p',1)
         values = myvalues(self.request)
         xmppemail = values['user'].email().lower()
         sender = db.IM("xmpp", xmppemail)
         query = MBook.all()
         query.filter('im =', sender).order('-date')
-        values['data'] = query
+        values['data'] = pagi(query, count, p)
         tp = os.path.join(DIR, 'tool.html')
         self.response.out.write(template.render(tp,values))
 

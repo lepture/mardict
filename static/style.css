@@ -333,3 +333,30 @@ label.required {
     color: #d54e21;
     text-decoration: none;
 }
+#tablenav {
+    height: 35px;
+    line-height: 35px;
+    vertical-align: middle;
+}
+/* pagination */
+#tablenav .pagination {
+    float: right;
+    line-height: 24px;
+}
+#tablenav .pagination a, #tablenav .page-numbers {
+    background: #eee;
+    border: 1px solid #e3e3e3;
+    padding: 3px 6px;
+    color: #1c6280;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+#tablenav .pagination .current {
+    background: #fff;
+    color: #999;
+}
+#tablenav .pagination a:hover {
+    background: #fff;
+}

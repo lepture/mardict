@@ -7,12 +7,28 @@
 {% endblock %}
 
 {% block main %}
-<div class="mform">
-    <form action="/tool/import/" method="post" enctype="multipart/form-data">
-        <input type="file" name="marfile" /><input type="submit" value="Submit" />
-    </form>
+<div id="tablenav" class="clearfix">
+    <div class="pagination">
+        <div class="clearfix page-nav">
+            {% if data.has_previous %}
+            <a href="?p={{data.previous_page_number}}" class="page-numbers" title="previous page">«</a>
+            {% endif %}
+
+            {% for p in data.paginator.mvrange %}
+            {% ifequal p data.number %}
+            <span class="page-numbers current">{{p}}</span>
+            {% else %}
+            <a href="?p={{p}}" class="page-numbers">{{p}}</a>
+            {% endifequal %}
+            {% endfor %}
+
+            {% if data.has_next %}
+            <a href="?p={{data.next_page_number}}" class="page-numbers" title="next page">»</a>
+            {% endif %}
+        </div>
+    </div>
 </div>
-<div class="mtable">
+<div class="mtable clear">
     <table>
         <thead>
             <tr>
@@ -24,20 +40,20 @@
             </tr>
         </thead>
         <tbody>
-            {% for item in data %}
+            {% for item in data.object_list %}
             <tr class="{% cycle odd,even %}">
                 <td>
                     <p>{{ item.word }}</p>
                     <p class="actions">
-                        <span class="delete">
-                            <a href="?action=delete">Delete</a>
-                        </span>
+                    <span class="delete">
+                        <a href="?action=delete">Delete</a>
+                    </span>
                     </p>
                 </td>
                 <td><p>{{ item.pron }}</p></td>
                 <td><p>{{ item.define }}</p></td>
                 <td><p>{{ item.rating }}</p></td>
-                <td><p>{{ item.date|date:"D d M Y" }}</p></td>
+                <td><p>{{ item.date|date:"Y-m-d H:i:s" }}</p></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -52,5 +68,4 @@
         </tfoot>
     </table>
 </div>
-
 {% endblock %}
