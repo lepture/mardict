@@ -92,3 +92,9 @@ class XMLImport(webapp.RequestHandler):
             mdb.put()
         #self.response.out.write(content)
         self.redirect('/tool/')
+
+
+class Error404(webapp.RequestHandler):
+    def get(self):
+        self.error(404)
+        #self.response.out.write('Not Found')
