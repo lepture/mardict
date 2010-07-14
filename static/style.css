@@ -320,8 +320,8 @@ label.required {
 .mtable .cl-define {
     width: 350px;
 }
-.mtable .cl-rate {
-    width: 40px;
+.mtable .cl-date {
+    width: 128px;
 }
 .mtable tbody tr.even {
     background: #fffed6;

@@ -65,7 +65,7 @@ class User(webapp.RequestHandler):
 
 class History(webapp.RequestHandler):
     def get(self):
-        count = 10
+        count = 15
         p = self.request.get('p',1)
         values = myvalues(self.request)
         xmppemail = values['user'].email().lower()
