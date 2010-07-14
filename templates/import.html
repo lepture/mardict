@@ -1,15 +1,4 @@
-{% extends "base.html" %}
-
-{% block nav %}
-<li><a href="/">Home</a></li>
-<li><a class="current" href="/user/">User</a></li>
-<li><a href="/help/">Help</a></li>
-{% endblock %}
-
-{% block subnav %}
-<li><a href="/user/mardict.xml">Export</a></li>
-<li><a href="/user/import/">Import</a></li>
-{% endblock %}
+{% extends "user.html" %}
 
 {% block main %}
 <div class="mform">

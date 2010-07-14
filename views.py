@@ -9,7 +9,7 @@ from google.appengine.api import users
 from google.appengine.ext import db
 
 from config import DIR, VERSION
-from models import MBook
+from models import MBook, DictLog
 from utils.parsexml import MarXML
 from utils.paginator import pagi
 
@@ -41,24 +41,48 @@ class Help(webapp.RequestHandler):
         tp = os.path.join(DIR, 'help.html')
         self.response.out.write(template.render(tp,values))
 
-class Tool(webapp.RequestHandler):
+class User(webapp.RequestHandler):
     def get(self):
         count = 10
-        #stor = self.request.get_all(action='none', p=1)
         p = self.request.get('p',1)
         values = myvalues(self.request)
         xmppemail = values['user'].email().lower()
         sender = db.IM("xmpp", xmppemail)
+
+        action = self.request.get('action','none')
+        key = self.request.get('key','none')
+        if action != 'none' and key != 'none':
+            m = db.get(key)
+            if m.im == sender:
+                db.delete(m)
+            self.redirect('/user/')
+
         query = MBook.all()
         query.filter('im =', sender).order('-date')
         values['data'] = pagi(query, count, p)
-        tp = os.path.join(DIR, 'tool.html')
+        tp = os.path.join(DIR, 'user.html')
         self.response.out.write(template.render(tp,values))
 
 class Log(webapp.RequestHandler):
     def get(self):
+        count = 10
+        p = self.request.get('p',1)
         values = myvalues(self.request)
-        tp = os.path.join(DIR, 'tool.html')
+        xmppemail = values['user'].email().lower()
+        sender = db.IM("xmpp", xmppemail)
+
+        action = self.request.get('action','none')
+        key = self.request.get('key','none')
+        if action != 'none' and key != 'none':
+            m = db.get(key)
+            if m.im == sender:
+                db.delete(m)
+            self.redirect('/user/')
+
+        query = DictLog.all()
+        query.filter('im =', sender).order('-date')
+        values['data'] = pagi(query, count, p)
+        tp = os.path.join(DIR, 'log.html')
         self.response.out.write(template.render(tp,values))
 
 class XMLExport(webapp.RequestHandler):
@@ -91,7 +115,7 @@ class XMLImport(webapp.RequestHandler):
             mdb.date = m['date']
             mdb.put()
         #self.response.out.write(content)
-        self.redirect('/tool/')
+        self.redirect('/user/')
 
 
 class Error404(webapp.RequestHandler):

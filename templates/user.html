@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}MarDict | User{% endblock %}
+
 {% block nav %}
 <li><a href="/">Home</a></li>
 <li><a class="current" href="/user/">User</a></li>
@@ -7,6 +9,8 @@
 {% endblock %}
 
 {% block subnav %}
+<li><a href="/user/">List</a></li>
+<li><a href="/user/log/">History</a></li>
 <li><a href="/user/mardict.xml">Export</a></li>
 <li><a href="/user/import/">Import</a></li>
 {% endblock %}
@@ -51,7 +55,7 @@
                     <p>{{ item.word }}</p>
                     <p class="actions">
                     <span class="delete">
-                        <a href="?action=delete">Delete</a>
+                        <a href="?action=delete&key={{item.key}}">Delete</a>
                     </span>
                     </p>
                 </td>

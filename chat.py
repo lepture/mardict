@@ -5,7 +5,7 @@ from google.appengine.ext import db
 from google.appengine.ext.webapp import xmpp_handlers
 
 from utils.mardict import DictCN, GoogleDict
-from utils.data import *
+from utils.helper import *
 
 from models import *
 
@@ -25,7 +25,7 @@ def star_rate(num):
 class Message:
     def __init__(self, message):
         self.__message = message
-        self.sender = db.IM("xmpp", message.sender.split('/')[0])
+        self.sender = db.IM("xmpp", message.sender.split('/')[0].lower())
 
     def parse_cmd(self):
         content = self.__message.body
@@ -85,10 +85,10 @@ class Message:
         if response:
             data = response
             reply = '%s [%s]\nfrom: dict.cn\n%s' % \
-                    (data['key'], data['pron'], data['define'])
+                    (data['word'], data['pron'], data['define'])
 
             sender = self.sender
-            DictLog.add_record(sender, data['key'], data['define'], data['pron'])
+            DictLog.add_record(sender, data['word'], data['define'], data['pron'])
         else:
             reply = 'Not Found'
         return reply
@@ -101,7 +101,7 @@ class Message:
         if response:
             data = response
             reply = '%s\nfrom: google\n%s' % \
-                    (data['key'], data['define'])
+                    (data['word'], data['define'])
         else:
             reply = 'Not Found'
         return reply
@@ -115,39 +115,37 @@ class Message:
         if response:
             data = response
             reply = '%s\nfrom: google\n%s' % \
-                    (data['key'], data['define'])
+                    (data['word'], data['define'])
         else:
             reply = 'Not Found'
         return reply
 
     def __nocmd(self, content):
-        response = DictCN(content).get_response()
-        if response:
-            data = response
-            reply = '%s [%s]\nfrom: dict.cn\n%s' % \
-                    (data['key'], data['pron'], data['define'])
-            sender = self.sender
-            if 'help' == content:
-                reply += '\nNeed help? Type ":help" for more infomation.'
-            else:
-                DictLog.add_record(sender, data['key'], data['define'], data['pron'])
-        else:
-            g = GoogleDict(content)
-            lan = g.detect_language()
-            if ('zh-CN' or 'zh-TW') == lan:
-                lan1 = lan
-                lan2 = 'en'
-            else:
-                lan1 = lan
-                lan2 = 'zh'
-            g = GoogleDict(content,lan1,lan2)
-            response = g.get_response()
+        if 1 == len(content.split()):
+            response = DictCN(content).get_response()
             if response:
                 data = response
-                reply = '%s\nfrom: google\n%s' % \
-                        (data['key'], data['define'])
-            else:
-                reply = 'Not Found'
+                reply = '%s [%s]\nfrom: dict.cn\n%s' % \
+                        (data['word'], data['pron'], data['define'])
+                sender = self.sender
+                if 'help' == content:
+                    reply += '\nNeed help? Type ":help" for more infomation.'
+                else:
+                    DictLog.add_record(sender, data['word'], data['define'], data['pron'])
+                return reply
+        g = GoogleDict(content)
+        lan = g.detect_language()
+        lan1 = lan
+        lan2 = 'zh'
+        if ('zh-CN' or 'zh-TW') == lan:
+            lan2 = 'en'
+        g = GoogleDict(content,lan1,lan2)
+        response = g.get_response()
+        reply = 'Not Found'
+        if response:
+            data = response
+            reply = '%s\nfrom: google\n%s' % \
+                    (data['word'], data['define'])
         return reply
 
     def __add(self, sender, content):
@@ -156,9 +154,9 @@ class Message:
             if 0 == len(mb):
                 trans = DictCN(content).get_response()
                 if trans:
-                    MBook.add_record(sender, trans['key'], trans['define'], trans['pron'])
+                    MBook.add_record(sender, trans['word'], trans['define'], trans['pron'])
                     reply = '"%s" has added to your libarary\n\n%s [%s]\n%s' % \
-                            (trans['key'], trans['key'], trans['pron'], trans['define'])
+                            (trans['word'], trans['word'], trans['pron'], trans['define'])
                 else:
                     reply = 'Something Wrong Happened. Cannot find the word'
             else:
@@ -166,9 +164,11 @@ class Message:
                 if m.rating < 5:
                     m.rating += 1
                     m.put()
-                    reply = 'You had added it before'
+                    reply = u'You added "%s" before\n\n%s\n%s [%s]\n%s' % \
+                            (star_rate(m.rating), m.word, m.word, m.pron, m.define)
                 else:
-                    reply = 'You have added 5 times'
+                    reply = u'You added "%s" more than 5 times\n\n%s\n%s [%s]\n%s' % \
+                            (star_rate(m.rating), m.word, m.word, m.pron, m.define)
         else:
             log = DictLog.get_record(sender)
             if 0 == len(log):
@@ -302,8 +302,6 @@ class Message:
             reply = help_clear
         return reply
 
-
-
 class XmppHandler(xmpp_handlers.CommandHandler):
     def text_message(self, message=None):
         if message:
@@ -313,98 +311,5 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         else:
             message.reply('You Asked Nothing')
 
-    def add_command(self, message=None):
-        sender = message.sender.split('/')[0]
-        im_from = db.IM("xmpp", sender)
-        if message.arg:
-            mb = MBook.get_record(im_from, message.arg)
-            if 0 == len(mb):
-                trans = parse_message(message.arg)
-                if trans:
-                    MBook.add_record(im_from, trans['key'], trans['define'], trans['pron'])
-                    reply = '"%s" has added to your libarary' % trans['key']
-                    message.reply(reply)
-                else:
-                    message.reply('Something Wrong Happened. Cannot find the word')
-            else:
-                m = mb[0]
-                if m.rating < 6:
-                    m.rating += 1
-                    m.put()
-                    message.reply('You had added it before')
-                else:
-                    message.reply('You have added 6 times')
-        else:
-            message.reply('usage:\n/add yourword')
-
-    def del_command(self, message=None):
-        sender = message.sender.split('/')[0]
-        im_from = db.IM("xmpp", sender)
-        if message.arg:
-            mb = MBook.get_record(im_from, message.arg)
-            if 0 == len(mb):
-                message.reply('"%s" not in your libarary' % message.arg)
-            else:
-                m = mb[0]
-                m.delete()
-                message.reply('"%s" has been deleted' % message.arg)
-        else:
-            message.reply('usage:\n/del yourword')
-
-    def list_command(self, message=None):
-        sender = message.sender.split('/')[0]
-        im_from = db.IM("xmpp", sender)
-        if message.arg:
-            try:
-                count = int(message.arg)
-            except ValueError:
-                count = 10
-        else:
-            count = 10
-        lib = MBook.list_record(im_from, count)
-        reply = 'list:\n'
-        for m in lib:
-            reply += '%s [%s]\n%s\n\n' % (m.word, m.pron or 'google', m.define)
-        message.reply(reply)
-
-    def rating_command(self, message=None):
-        sender = message.sender.split('/')[0]
-        im_from = db.IM("xmpp", sender)
-        if message.arg:
-            cmd = message.arg.split()
-            try:
-                rate = int(cmd[0])
-            except ValueError:
-                rate = 0
-            try:
-                count = int(cmd[1])
-            except:
-                count = 10
-        else:
-            rate = 0
-            count = 10
-        lib = MBook.rating_record(im_from, rate, count)
-        reply = 'rating:%s\n' % rate
-        for m in lib:
-            reply += '%s [%s]\n%s\n\n' % (m.word, m.pron or 'google', m.define)
-        message.reply(reply)
-    
-    def help_command(self, message=None):
-        help_info = '/help, this help menu\n'
-        help_info += '/dict (word), translation\n'
-        help_info += '/add (word), add word to your libarary\n'
-        help_info += '/del (word), del word from your libarary\n'
-        help_info += '/list (number), list your recent 10 words from libarary\n'
-        help_info += '/rating (number) (number), list your rating words\n'
-        if message:
-            cmd = message.arg or ''
-            if cmd:
-                reply = 'No info for %s now' % cmd
-                message.reply(reply)
-            else:
-                message.reply(help_info)
-        else:
-            message.reply('You Asked Nothing')
-
     def unhandled_command(self, message=None):
-        message.reply('type /help to get more info')
+        message.reply('type :help to get more info')

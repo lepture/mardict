@@ -22,7 +22,7 @@ help on dict:
 [intro] translate your word only use dict.cn api
 [eg] :dict hello
 
-more on http://mardict.appspot.com/help/#2
+more on http://mardict.appspot.com/help/#dict
 """
 
 help_google = """
@@ -31,7 +31,7 @@ help on google:
 [intro] translate your word only use google api
 [eg] :google google is a bitch
 
-more on http://mardict.appspot.com/help/#3
+more on http://mardict.appspot.com/help/#google
 """
 
 help_lan2lan = """
@@ -40,7 +40,7 @@ help on lan2lan:
 [intro] translate from one language to another language by google translation api
 [eg] :en2zh hello
 
-more on http://mardict.appspot.com/help/#4
+more on http://mardict.appspot.com/help/#lan2lan
 """
 
 help_history = """
@@ -49,7 +49,7 @@ help on history:
 [intro] list your search history
 [eg] :history 9
 
-more on http://mardict.appspot.com/help/#5
+more on http://mardict.appspot.com/help/#history
 """
 
 help_clear = """
@@ -57,7 +57,7 @@ help on clear:
 [usage] :clear
 [intro] clear your search history
 
-more on http://mardict.appspot.com/help/#6
+more on http://mardict.appspot.com/help/#clear
 """
 
 help_add = """
@@ -66,7 +66,7 @@ help on add:
 [intro] add the new word to your library(storing your unfamiliar word)
 [eg] :add hello
 
-more on http://mardict.appspot.com/help/#7
+more on http://mardict.appspot.com/help/#add
 """
 
 help_del = """
@@ -75,7 +75,7 @@ help on del:
 [intro] delete the word from your library
 [eg] :del hello
 
-more on http://mardict.appspot.com/help/#8
+more on http://mardict.appspot.com/help/#del
 """
 
 help_list = """
@@ -86,7 +86,7 @@ help on list:
 
 this function is very complex, browser the website.
 
-more on http://mardict.appspot.com/help/#9
+more on http://mardict.appspot.com/help/#list
 """
 
 help_rating = """
@@ -97,5 +97,5 @@ help on rating:
 
 this function is very complex, browser the website.
 
-more on http://mardict.appspot.com/help/#10
+more on http://mardict.appspot.com/help/#rating
 """

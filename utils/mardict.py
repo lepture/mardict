@@ -1,6 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+Mardict - Marvour Dict Bot
+Copyright (c) 2010 Marvour Young
+
+Using api from http://dict.cn and http://www.google.com
+"""
+
+__AUTHOR__ = 'Marvour Young <marvour@gmail.com>'
+__VERSION__ = 1.0
+
 import re
 import urllib2
 from django.utils.simplejson import loads as parse_json
@@ -50,7 +60,7 @@ class DictCN(object):
             for num in match:
                 fix = '&#%s;' % num
                 pron = pron.replace(fix,unichr(int(num)))
-        data = {'from': 'dictcn','key': key, 'pron': pron, 'define': define}
+        data = {'from': 'dictcn','word': key, 'pron': pron, 'define': define}
         return data
 
     def get_response(self):
@@ -100,7 +110,7 @@ class GoogleDict(object):
                 key = self.__word
             define = source['translatedText']
             pron = 'none'
-            data = {'from':'google','key':key, 'pron':pron,'define': define }
+            data = {'from':'google','word':key, 'pron':pron,'define': define }
         else:
             data = None
         return data
@@ -114,10 +124,10 @@ if '__main__' == __name__:
     d = DictCN(word)
     data = d.get_response()
     reply = '%s [%s]\nfrom: dict.cn\n%s' % \
-            (data['key'], data['pron'], data['define'])
+            (data['word'], data['pron'], data['define'])
     print reply
     g = GoogleDict(word)
     data = g.get_response()
     reply = '%s\nfrom: google\n%s' % \
-            (data['key'], data['define'])
+            (data['word'], data['define'])
     print reply
