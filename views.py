@@ -5,8 +5,9 @@ import os
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
-from google.appengine.api import users
 from google.appengine.ext import db
+from google.appengine.api import users
+from google.appengine.api import memcache
 
 from config import DIR, VERSION
 from models import MBook, DictLog
@@ -43,23 +44,37 @@ class Help(webapp.RequestHandler):
 
 class User(webapp.RequestHandler):
     def get(self):
-        count = 10
+        count = 15
         p = self.request.get('p',1)
         values = myvalues(self.request)
         xmppemail = values['user'].email().lower()
         sender = db.IM("xmpp", xmppemail)
+        dictkey = xmppemail + '$dict'
 
         action = self.request.get('action','none')
         key = self.request.get('key','none')
-        if action != 'none' and key != 'none':
+        if action == 'delete' and key != 'none':
+            memcache.delete(dictkey)
             m = db.get(key)
-            if m.im == sender:
+            if m and m.im == sender:
                 db.delete(m)
             self.redirect('/user/')
-
-        query = MBook.all()
-        query.filter('im =', sender).order('-date')
-        values['data'] = pagi(query, count, p)
+        data = memcache.get(dictkey)
+        if not data:
+            query = MBook.all()
+            query.filter('im =', sender).order('-date')
+            data = []
+            for item in query:
+                data.append(dict(
+                    key = item.key(),
+                    word = item.word,
+                    pron = item.pron,
+                    define = item.define,
+                    rating = item.rating,
+                    date = item.date,
+                ))
+            memcache.set(dictkey, data, 86400)
+        values['data'] = pagi(data, count, p)
         tp = os.path.join(DIR, 'user.html')
         self.response.out.write(template.render(tp,values))
 
@@ -70,18 +85,31 @@ class History(webapp.RequestHandler):
         values = myvalues(self.request)
         xmppemail = values['user'].email().lower()
         sender = db.IM("xmpp", xmppemail)
+        histkey = xmppemail + '$hist'
 
         action = self.request.get('action','none')
         key = self.request.get('key','none')
-        if action != 'none' and key != 'none':
+        if action == 'delete' and key != 'none':
+            memcache.delete(histkey)
             m = db.get(key)
-            if m.im == sender:
+            if m and m.im == sender:
                 db.delete(m)
-            self.redirect('/user/')
-
-        query = DictLog.all()
-        query.filter('im =', sender).order('-date')
-        values['data'] = pagi(query, count, p)
+            self.redirect('/user/history/')
+        data = memcache.get(histkey)
+        if not data:
+            query = DictLog.all()
+            query.filter('im =', sender).order('-date')
+            data = []
+            for item in query:
+                data.append(dict(
+                    key = item.key(),
+                    word = item.word,
+                    pron = item.pron,
+                    define = item.define,
+                    date = item.date,
+                ))
+            memcache.set(histkey, data, 3600)
+        values['data'] = pagi(data, count, p)
         tp = os.path.join(DIR, 'history.html')
         self.response.out.write(template.render(tp,values))
 
@@ -116,7 +144,6 @@ class XMLImport(webapp.RequestHandler):
             mdb.put()
         #self.response.out.write(content)
         self.redirect('/user/')
-
 
 class Error404(webapp.RequestHandler):
     def get(self):
