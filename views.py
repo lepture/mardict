@@ -63,7 +63,7 @@ class User(webapp.RequestHandler):
         tp = os.path.join(DIR, 'user.html')
         self.response.out.write(template.render(tp,values))
 
-class Log(webapp.RequestHandler):
+class History(webapp.RequestHandler):
     def get(self):
         count = 10
         p = self.request.get('p',1)
@@ -82,7 +82,7 @@ class Log(webapp.RequestHandler):
         query = DictLog.all()
         query.filter('im =', sender).order('-date')
         values['data'] = pagi(query, count, p)
-        tp = os.path.join(DIR, 'log.html')
+        tp = os.path.join(DIR, 'history.html')
         self.response.out.write(template.render(tp,values))
 
 class XMLExport(webapp.RequestHandler):
