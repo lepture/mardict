@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}MarDict | Dashboard{% endblock %}
+
+{% block nav %}
+<li><a href="/">Home</a></li>
+<li><a href="/user/">User</a></li>
+<li><a href="/help/">Help</a></li>
+<li><a class="current" href="/god/">Dashboard</a></li>
+{% endblock %}
+
+{% block main %}
+<div id="tablenav" class="clearfix">
+    <div class="actions">
+        <a href="?action=flush" class="button">Flush Cache</a>
+    </div>
+</div>
+<div class="mtable">
+    <h3>Memcache Viewwer</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Hit</th><th>Miss</th><th>Number</th>
+                <th>Hit Size</th><th>Total Size</th><th>Age</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{memstat.hits}}</td>
+                <td>{{memstat.misses}}</td>
+                <td>{{memstat.items}}</td>
+                <td>{{memstat.byte_hits|filesizeformat}}</td>
+                <td>{{memstat.bytes|filesizeformat}}</td>
+                <td>{{memstat.age}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

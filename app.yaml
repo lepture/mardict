@@ -19,6 +19,10 @@ handlers:
   script: app.py
   login: required
 
+- url: /god/.*
+  script: app.py
+  login: admin 
+
 - url: /.*
   script: app.py
 

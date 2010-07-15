@@ -17,6 +17,8 @@ from utils.paginator import pagi
 def myvalues(request):
     user = users.get_current_user()
     if user:
+        user.admin = users.is_current_user_admin()
+    if user:
         st_url = users.create_logout_url(request.uri)
         st_text = 'Logout'
     else:
@@ -51,13 +53,16 @@ class User(webapp.RequestHandler):
         sender = db.IM("xmpp", xmppemail)
         dictkey = xmppemail + '$dict'
 
-        action = self.request.get('action','none')
-        key = self.request.get('key','none')
-        if action == 'delete' and key != 'none':
+        action = self.request.get('action')
+        key = self.request.get('key')
+        if key and 'delete' == action:
             memcache.delete(dictkey)
             m = db.get(key)
             if m and m.im == sender:
                 db.delete(m)
+            self.redirect('/user/')
+        if 'refresh' == action:
+            memcache.delete(dictkey)
             self.redirect('/user/')
         data = memcache.get(dictkey)
         if not data:
@@ -87,13 +92,16 @@ class History(webapp.RequestHandler):
         sender = db.IM("xmpp", xmppemail)
         histkey = xmppemail + '$hist'
 
-        action = self.request.get('action','none')
-        key = self.request.get('key','none')
-        if action == 'delete' and key != 'none':
+        action = self.request.get('action')
+        key = self.request.get('key')
+        if key and 'delete' == action:
             memcache.delete(histkey)
             m = db.get(key)
             if m and m.im == sender:
                 db.delete(m)
+            self.redirect('/user/history/')
+        if 'refresh' == action:
+            memcache.delete(histkey)
             self.redirect('/user/history/')
         data = memcache.get(histkey)
         if not data:
@@ -113,6 +121,29 @@ class History(webapp.RequestHandler):
         tp = os.path.join(DIR, 'history.html')
         self.response.out.write(template.render(tp,values))
 
+
+class God(webapp.RequestHandler):
+    def get(self):
+        action = self.request.get('action')
+        if 'flush' == action:
+            memcache.flush_all()
+            self.redirect('/god/')
+        values = myvalues(self.request)
+        memstat = memcache.get_stats()
+        age = int(memstat['oldest_item_age'])
+        if age < 60:
+            age = '%d s' % age
+        elif age < 3600:
+            age = '%d min' % (age/60)
+        elif age < 86400:
+            age = '%d hour' % (age/3600)
+        else:
+            age = '%d day' % (age/86400)
+        memstat['age'] = age
+        values['memstat'] = memstat
+        tp = os.path.join(DIR, 'god.html')
+        self.response.out.write(template.render(tp,values))
+        
 class XMLExport(webapp.RequestHandler):
     def get(self):
         values = myvalues(self.request)

@@ -338,6 +338,9 @@ label.required {
     line-height: 35px;
     vertical-align: middle;
 }
+#tablenav .actions {
+    float: left;
+}
 /* pagination */
 #tablenav .pagination {
     float: right;

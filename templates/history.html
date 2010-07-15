@@ -4,6 +4,9 @@
 
 {% block main %}
 <div id="tablenav" class="clearfix">
+    <div class="actions">
+        <a href="?action=refresh" class="button">Refresh</a>
+    </div>
     <div class="pagination">
         <div class="clearfix page-nav">
             {% if data.has_previous %}

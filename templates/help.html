@@ -4,8 +4,13 @@
 
 {% block nav %}
 <li><a href="/">Home</a></li>
+{% if user %}
 <li><a href="/user/">User</a></li>
+{% endif %}
 <li><a class="current" href="/help/">Help</a></li>
+{% if user.admin %}
+<li><a href="/god/">Dashboard</a></li>
+{% endif %}
 {% endblock %}
 
 {% block main %}

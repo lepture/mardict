@@ -16,6 +16,7 @@ application = webapp.WSGIApplication(
         ('/user/history/',History),
         ('/user/mardict\.xml', XMLExport),
         ('/user/import/', XMLImport),
+        ('/god/',God),
         ('/_ah/xmpp/message/chat/', XmppHandler),
         ('.*', Error404),
     ],

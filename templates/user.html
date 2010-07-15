@@ -6,6 +6,9 @@
 <li><a href="/">Home</a></li>
 <li><a class="current" href="/user/">User</a></li>
 <li><a href="/help/">Help</a></li>
+{% if user.admin %}
+<li><a href="/god/">Dashboard</a></li>
+{% endif %}
 {% endblock %}
 
 {% block subnav %}
@@ -17,6 +20,9 @@
 
 {% block main %}
 <div id="tablenav" class="clearfix">
+    <div class="actions">
+        <a href="?action=refresh" class="button">Refresh</a>
+    </div>
     <div class="pagination">
         <div class="clearfix page-nav">
             {% if data.has_previous %}
