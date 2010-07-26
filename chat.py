@@ -165,10 +165,10 @@ class Message:
                     m.rating += 1
                     m.put()
                     reply = u'You added "%s" before\n\n%s\n%s [%s]\n%s' % \
-                            (star_rate(m.rating), m.word, m.word, m.pron, m.define)
+                            (m.word, star_rate(m.rating), m.word, m.pron, m.define)
                 else:
                     reply = u'You added "%s" more than 5 times\n\n%s\n%s [%s]\n%s' % \
-                            (star_rate(m.rating), m.word, m.word, m.pron, m.define)
+                            (m.word, star_rate(m.rating), m.word, m.pron, m.define)
         else:
             log = DictLog.get_record(sender)
             if 0 == len(log):
