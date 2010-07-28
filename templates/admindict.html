@@ -1,29 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}MarDict | User{% endblock %}
+{% block title %}MarDict | AdminDict{% endblock %}
 
 {% block nav %}
 <li><a href="/">Home</a></li>
-<li><a class="current" href="/user/">User</a></li>
-<li><a href="/admindict/">AdminDict</a></li>
+{% if user %}
+<li><a href="/user/">User</a></li>
+{% endif %}
+<li><a class="current" href="/admindict/">AdminDict</a></li>
 <li><a href="/help/">Help</a></li>
 {% if user.admin %}
 <li><a href="/god/">Dashboard</a></li>
 {% endif %}
 {% endblock %}
 
-{% block subnav %}
-<li><a href="/user/">List</a></li>
-<li><a href="/user/history/">History</a></li>
-<li><a href="/user/mardict.xml">Export</a></li>
-<li><a href="/user/import/">Import</a></li>
-{% endblock %}
-
 {% block main %}
+<h3>主人的生词本</h3>
 <div id="tablenav" class="clearfix">
-    <div class="actions">
-        <a href="?action=refresh" class="button">Refresh</a>
-    </div>
     <div class="pagination">
         <div class="clearfix page-nav">
             {% if data.has_previous %}
@@ -60,11 +53,6 @@
             <tr class="{% cycle odd,even %}">
                 <td>
                     <p>{{ item.word }}</p>
-                    <p class="actions">
-                    <span class="delete">
-                        <a href="?action=delete&key={{item.key}}">Delete</a>
-                    </span>
-                    </p>
                 </td>
                 <td><p>{{ item.pron }}</p></td>
                 <td><p>{{ item.define }}</p></td>

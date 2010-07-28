@@ -13,6 +13,7 @@ application = webapp.WSGIApplication(
         ('/',Index),
         ('/help/',Help),
         ('/user/',User),
+        ('/admindict/',AdminDict),
         ('/user/history/',History),
         ('/user/mardict\.xml', XMLExport),
         ('/user/import/', XMLImport),

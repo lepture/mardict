@@ -44,6 +44,33 @@ class Help(webapp.RequestHandler):
         tp = os.path.join(DIR, 'help.html')
         self.response.out.write(template.render(tp,values))
 
+class AdminDict(webapp.RequestHandler):
+    def get(self):
+        count = 15
+        p = self.request.get('p',1)
+        values = myvalues(self.request)
+        xmppemail = 'sopheryoung@gmail.com'
+        sender = db.IM("xmpp", xmppemail)
+        dictkey = xmppemail + '$dict'
+        data = memcache.get(dictkey)
+        if not data:
+            query = MBook.all()
+            query.filter('im =', sender).order('-date')
+            data = []
+            for item in query:
+                data.append(dict(
+                    key = item.key(),
+                    word = item.word,
+                    pron = item.pron,
+                    define = item.define,
+                    rating = item.rating,
+                    date = item.date,
+                ))
+            memcache.set(dictkey, data, 86400)
+        values['data'] = pagi(data, count, p)
+        tp = os.path.join(DIR, 'admindict.html')
+        self.response.out.write(template.render(tp,values))
+
 class User(webapp.RequestHandler):
     def get(self):
         count = 15
