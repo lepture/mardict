@@ -43,10 +43,10 @@ class Message:
         elif 'dict' == cmd:
             data = self.__dict(content)
             return data
-        elif ('g' or'google') == cmd:
+        elif 'g'==cmd or 'google'==cmd:
             data = self.__google(content)
             return data
-        elif ('a' or 'add') == cmd:
+        elif 'a'==cmd or 'add'==cmd:
             sender = self.sender
             data = self.__add(sender, content)
             return data
@@ -54,15 +54,15 @@ class Message:
             sender = self.sender
             data = self.__del(sender, content)
             return data
-        elif ('l' or 'list') == cmd:
+        elif 'l'==cmd or 'list'==cmd:
             sender = self.sender
             data = self.__list(sender, content)
             return data
-        elif ('r' or 'rating') == cmd:
+        elif 'r'==cmd or 'rating'==cmd:
             sender = self.sender
             data = self.__rating(sender, content)
             return data
-        elif ('h' or 'history') == cmd:
+        elif 'h'==cmd or 'history'==cmd:
             sender = self.sender
             data = self.__history(sender, content)
             return data
